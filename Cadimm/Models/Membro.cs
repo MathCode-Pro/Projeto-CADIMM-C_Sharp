@@ -19,7 +19,18 @@ namespace Cadimm.Models
         public String Escolaridade { get; private set; }
         public bool Filiado { get; private set; }
 
-        public Membro(int id, string nome, string email, DateTime nascimento, string nomePai, string nomeMae, int cpf, int rg, string estadoCivil, string escolaridade, bool filiado)
+        public ICollection<Telefone> Telefones { get; private set; }
+
+        public Conjugue Conjugue { get; set; }
+        public DadosEleitor DadosEleitor { get; set; }
+        public ICollection<Endereco> Enderecos { get; private set; }
+        public Filiacao Filiacao { get; private set; }
+
+        public Membro()
+        {
+        }
+
+        public Membro(int id, string nome, string email, DateTime nascimento, string nomePai, string nomeMae, int cpf, int rg, string estadoCivil, string escolaridade, bool filiado, Conjugue conjugue, DadosEleitor dadosEleitor, Filiacao filiacao)
         {
             Id = id;
             Nome = nome;
@@ -32,6 +43,18 @@ namespace Cadimm.Models
             EstadoCivil = estadoCivil;
             Escolaridade = escolaridade;
             Filiado = filiado;
+            Conjugue = conjugue;
+            DadosEleitor = dadosEleitor;
+            Filiacao = filiacao;
+        }
+
+        public void AddTelefone(Telefone telefone)
+        {
+            Telefones.Add(telefone);
+        }
+        public void AddEndereco(Endereco endereco)
+        {
+            Enderecos.Add(endereco);
         }
     }
 }

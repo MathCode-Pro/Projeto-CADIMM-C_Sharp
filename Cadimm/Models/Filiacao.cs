@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -12,14 +13,22 @@ namespace Cadimm.Models
         public bool seraConsagrado { get; private set; }
         public String ConsagAtual { get; private set; }
         public String ConsagPretendida { get; private set; }
+        private Membro Membro { get; set; }
 
-        public Filiacao(int id, string filiadoEm, bool seraConsagrado, string consagAtual, string consagPretendida)
+        [Display(Name = "Membro")]
+        public int MembroId { get; private set; }
+        public Filiacao()
+        {
+        }
+
+        public Filiacao(int id, string filiadoEm, bool seraConsagrado, string consagAtual, string consagPretendida, Membro membro)
         {
             Id = id;
             FiliadoEm = filiadoEm;
             this.seraConsagrado = seraConsagrado;
             ConsagAtual = consagAtual;
             ConsagPretendida = consagPretendida;
+            Membro = membro;
         }
     }
 }

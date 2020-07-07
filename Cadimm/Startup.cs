@@ -10,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Cadimm.Data;
+using Cadimm.Services;
 
 namespace Cadimm
 {
@@ -29,6 +30,9 @@ namespace Cadimm
 
             services.AddDbContext<CadimmContext>(options => options.UseMySQL(Configuration.GetConnectionString("CadimmContext"), builder =>
  builder.MigrationsAssembly("Cadimm")));
+
+            services.AddScoped<MembroService>();
+            services.AddScoped<ConjugueService>(); services.AddScoped<DadosEleitorService>(); services.AddScoped<EnderecoService>(); services.AddScoped<FiliacaoService>(); services.AddScoped<TelefoneService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

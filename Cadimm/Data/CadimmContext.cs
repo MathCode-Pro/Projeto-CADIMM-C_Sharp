@@ -11,5 +11,10 @@ namespace Cadimm.Data
         }
 
         public DbSet<Membro> Membro { get; set; }
+        public DbSet<Conjugue> Conjugue { get; set; }
+        public DbSet<DadosEleitor> DadosEleitor { get; set; }
+        public DbSet<Endereco> Endereco { get; set; }
+        public DbSet<Filiacao> Filiacao { get; set; }
+        public DbSet<Telefone> Telefone { get; set; }
     }
 }
