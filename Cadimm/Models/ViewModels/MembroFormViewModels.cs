@@ -12,6 +12,8 @@ namespace Cadimm.Models.ViewModels
         public DadosEleitor DadosEleitor { get; set; }
         public Endereco Endereco { get; set; }
         public Filiacao Filiacao { get; set; }
-        public Telefone Telefone { get; set; }
+        public ICollection<Telefone> Telefones { get; set; }
+        public ICollection<Cidade> Cidades { get; set; }
+        public ICollection<Estado> Estados { get; set; }
     }
 }

@@ -14,9 +14,7 @@ namespace Cadimm.Models
         public int Zona { get; private set; }
         public int Secao { get; private set; }
         public Membro Membro { get; private set; }
-
-        [Display(Name = "Membro")]
-        public int MembroId { get; private set; }
+        public int MembroId { get; set; }
         public DadosEleitor()
         {
         }

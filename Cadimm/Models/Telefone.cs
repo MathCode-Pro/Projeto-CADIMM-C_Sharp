@@ -10,10 +10,8 @@ namespace Cadimm.Models
     public class Telefone
     {
         [Key]
+        [Display(Name = "Telefone")]
         public int Numero { get; set; }
-        public Membro Membro { get; private set; }
-
-        [Display(Name = "Membro")]
-        public int MembroId { get; private set; }
+        public int MembroId { get; set; }
     }
 }

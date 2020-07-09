@@ -16,5 +16,7 @@ namespace Cadimm.Data
         public DbSet<Endereco> Endereco { get; set; }
         public DbSet<Filiacao> Filiacao { get; set; }
         public DbSet<Telefone> Telefone { get; set; }
+        public DbSet<Cidade> Cidade { get; set; }
+        public DbSet<Estado> Estado { get; set; }
     }
 }

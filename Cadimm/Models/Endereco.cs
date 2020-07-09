@@ -13,13 +13,14 @@ namespace Cadimm.Models
         public string Rua { get; private set; }
         public string Complemento { get; private set; }
         public string Setor { get; private set; }
+
+        [Display(Name = "CEP")]
         public int Cep { get; private set; }
 
-        public SortedDictionary<string, List<string>> Cidade_Estado = new SortedDictionary<string, List<string>>();
-        private ICollection<Membro> Membros { get; set; }
+        public SortedDictionary<Estado, List<Cidade>> Cidade_Estado = new SortedDictionary<Estado, List<Cidade>>();
+        public int MembroId { get; set; }
+        public int CidadeId { get; set; }
 
-        [Display(Name = "Membro")]
-        public int MembroId { get; private set; }
         public Endereco()
         {
         }
@@ -33,9 +34,9 @@ namespace Cadimm.Models
             Cep = cep;
         }
 
-        public void AddCidadeEstado(string estado, List<string> cidade)
+        public void AddCidadeEstado(Estado estado, List<Cidade> cidades)
         {
-            Cidade_Estado.Add(estado, cidade);
+            Cidade_Estado.Add(estado, cidades);
         }
     }
 }

@@ -9,11 +9,14 @@ namespace Cadimm.Models
     public class Conjugue
     {
         public int Id { get; private set; }
+
+        [Display(Name = "Nome do Conjugue")]
         public String Nome { get; private set; }
         public Membro Membro { get; private set; }
 
-        [Display(Name ="Membro")]
-        public int MembroId { get; private set; }
+        [Display(Name = "Telefones do Conjugue")]
+        public ICollection<Telefone> Telefones { get; private set; }
+        public int MembroId { get; set; }
 
         public Conjugue()
         {
@@ -24,6 +27,11 @@ namespace Cadimm.Models
             Id = id;
             Nome = nome;
             Membro = membro;
+        }
+
+        public void AddTelefone(Telefone telefone)
+        {
+            Telefones.Add(telefone);
         }
     }
 }
