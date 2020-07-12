@@ -11,16 +11,16 @@ namespace Cadimm.Models
         public int Id { get; private set; }
 
         [Display(Name = "Filiado em")]
-        public String FiliadoEm { get; private set; }
+        public string FiliadoEm { get; private set; }
 
         [Display(Name = "Será Consagrado?")]
         public bool seraConsagrado { get; private set; }
 
         [Display(Name = "Consagração Atual")]
-        public String ConsagAtual { get; private set; }
+        public string ConsagAtual { get; private set; }
 
         [Display(Name = "Consagração Pretendida")]
-        public String ConsagPretendida { get; private set; }
+        public string ConsagPretendida { get; private set; }
         public int MembroId { get; private set; }
         public Filiacao()
         {

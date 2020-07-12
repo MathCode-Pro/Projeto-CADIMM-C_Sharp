@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Cadimm.Migrations
 {
     [DbContext(typeof(CadimmContext))]
-    [Migration("20200707134001_EntidadesSecundarias")]
-    partial class EntidadesSecundarias
+    [Migration("20200709143341_CorrecaoCidadeEstado")]
+    partial class CorrecaoCidadeEstado
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -18,6 +18,25 @@ namespace Cadimm.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "3.1.5")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
+
+            modelBuilder.Entity("Cadimm.Models.Cidade", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int>("EstadoId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Nome")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EstadoId");
+
+                    b.ToTable("Cidade");
+                });
 
             modelBuilder.Entity("Cadimm.Models.Conjugue", b =>
                 {
@@ -74,8 +93,14 @@ namespace Cadimm.Migrations
                     b.Property<int>("Cep")
                         .HasColumnType("int");
 
+                    b.Property<int>("CidadeId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Complemento")
                         .HasColumnType("text");
+
+                    b.Property<int>("EstadoId")
+                        .HasColumnType("int");
 
                     b.Property<int>("MembroId")
                         .HasColumnType("int");
@@ -88,9 +113,30 @@ namespace Cadimm.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CidadeId");
+
+                    b.HasIndex("EstadoId");
+
                     b.HasIndex("MembroId");
 
                     b.ToTable("Endereco");
+                });
+
+            modelBuilder.Entity("Cadimm.Models.Estado", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("Nome")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Sigla")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Estado");
                 });
 
             modelBuilder.Entity("Cadimm.Models.Filiacao", b =>
@@ -169,14 +215,28 @@ namespace Cadimm.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    b.Property<int?>("ConjugueId")
+                        .HasColumnType("int");
+
                     b.Property<int>("MembroId")
                         .HasColumnType("int");
 
                     b.HasKey("Numero");
 
+                    b.HasIndex("ConjugueId");
+
                     b.HasIndex("MembroId");
 
                     b.ToTable("Telefone");
+                });
+
+            modelBuilder.Entity("Cadimm.Models.Cidade", b =>
+                {
+                    b.HasOne("Cadimm.Models.Estado", "Estado")
+                        .WithMany("Cidade")
+                        .HasForeignKey("EstadoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Cadimm.Models.Conjugue", b =>
@@ -199,6 +259,18 @@ namespace Cadimm.Migrations
 
             modelBuilder.Entity("Cadimm.Models.Endereco", b =>
                 {
+                    b.HasOne("Cadimm.Models.Cidade", "Cidade")
+                        .WithMany()
+                        .HasForeignKey("CidadeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Cadimm.Models.Estado", "Estado")
+                        .WithMany()
+                        .HasForeignKey("EstadoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Cadimm.Models.Membro", null)
                         .WithMany("Enderecos")
                         .HasForeignKey("MembroId")
@@ -217,7 +289,11 @@ namespace Cadimm.Migrations
 
             modelBuilder.Entity("Cadimm.Models.Telefone", b =>
                 {
-                    b.HasOne("Cadimm.Models.Membro", "Membro")
+                    b.HasOne("Cadimm.Models.Conjugue", null)
+                        .WithMany("Telefones")
+                        .HasForeignKey("ConjugueId");
+
+                    b.HasOne("Cadimm.Models.Membro", null)
                         .WithMany("Telefones")
                         .HasForeignKey("MembroId")
                         .OnDelete(DeleteBehavior.Cascade)

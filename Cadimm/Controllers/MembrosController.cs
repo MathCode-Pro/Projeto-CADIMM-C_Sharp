@@ -7,17 +7,35 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Cadimm.Data;
 using Cadimm.Models;
+using Cadimm.Services;
+using Cadimm.Models.ViewModels;
 
 namespace Cadimm.Controllers
 {
     public class MembrosController : Controller
     {
         private readonly CadimmContext _context;
+        private readonly EstadoService _estadoService;
+        private readonly CidadeService _cidadeService;
+        private readonly ConjugueService _conjugueService;
+        private readonly DadosEleitorService _dadosEleitorService;
+        private readonly EnderecoService _enderecoService;
+        private readonly FiliacaoService _filiacaoService;
+        private readonly TelefoneService _telefoneService;
 
-        public MembrosController(CadimmContext context)
+        public MembrosController(CadimmContext context, EstadoService estadoService, CidadeService cidadeService, ConjugueService conjugueService, DadosEleitorService dadosEleitorService, EnderecoService enderecoService, FiliacaoService filiacaoService, TelefoneService telefoneService)
         {
             _context = context;
+            _estadoService = estadoService;
+            _cidadeService = cidadeService;
+            _conjugueService = conjugueService;
+            _dadosEleitorService = dadosEleitorService;
+            _enderecoService = enderecoService;
+            _filiacaoService = filiacaoService;
+            _telefoneService = telefoneService;
         }
+
+
 
         // GET: Membros
         public async Task<IActionResult> Index()
@@ -44,9 +62,24 @@ namespace Cadimm.Controllers
         }
 
         // GET: Membros/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            return View();
+
+            List<Estado> estados = await _estadoService.BuscarEstadosAssync();
+
+            estados.Insert(0, new Estado(-1, "Selecione o Estado", null));
+
+            MembroFormViewModels viewModel = new MembroFormViewModels() { Estados = estados };
+
+            return View(viewModel);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetCidades(int estadoId)
+        {
+            var cidade = await _context.Cidade.OrderBy(c => c.Nome).Where(c => c.EstadoId == estadoId).Select(y => new { y.Id, Value = y.Nome }).ToListAsync();
+
+            return Json(new { cidade });
         }
 
         // POST: Membros/Create
@@ -54,11 +87,16 @@ namespace Cadimm.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Nome,Email,Nascimento,NomePai,NomeMae,Cpf,Rg,EstadoCivil,Escolaridade,Filiado")] Membro membro)
+        public async Task<IActionResult> Create([Bind("Id,Nome,Email,Nascimento,NomePai,NomeMae,Cpf,Rg,EstadoCivil,Escolaridade,Filiado")] Membro membro, Conjugue conjugue, DadosEleitor dadosEleitor, Endereco endereco, Filiacao filiacao, Telefone telefone, int id)
         {
             if (ModelState.IsValid)
             {
                 _context.Add(membro);
+                _context.Add(conjugue);
+                _context.Add(dadosEleitor);
+                _context.Add(endereco);
+                _context.Add(filiacao);
+                _context.Add(telefone);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }

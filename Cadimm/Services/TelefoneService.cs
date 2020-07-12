@@ -15,11 +15,14 @@ namespace Cadimm.Services
         {
             _context = context;
         }
-
-        public async Task InsertAsync(Telefone obj)
+        internal async Task InsertAsync(ICollection<Telefone> telefones)
         {
-            _context.Add(obj);
-            await _context.SaveChangesAsync();
+            foreach (Telefone telefone in telefones)
+            {
+                _context.Add(telefone);
+                await _context.SaveChangesAsync();
+
+            }
         }
     }
 }

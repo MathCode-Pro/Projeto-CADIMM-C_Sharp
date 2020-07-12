@@ -23,9 +23,6 @@ namespace Cadimm.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int>("EnderecoId")
-                        .HasColumnType("int");
-
                     b.Property<int>("EstadoId")
                         .HasColumnType("int");
 
@@ -94,8 +91,14 @@ namespace Cadimm.Migrations
                     b.Property<int>("Cep")
                         .HasColumnType("int");
 
+                    b.Property<int>("CidadeId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Complemento")
                         .HasColumnType("text");
+
+                    b.Property<int>("EstadoId")
+                        .HasColumnType("int");
 
                     b.Property<int>("MembroId")
                         .HasColumnType("int");
@@ -107,6 +110,10 @@ namespace Cadimm.Migrations
                         .HasColumnType("text");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CidadeId");
+
+                    b.HasIndex("EstadoId");
 
                     b.HasIndex("MembroId");
 
@@ -120,6 +127,9 @@ namespace Cadimm.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Nome")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Sigla")
                         .HasColumnType("text");
 
                     b.HasKey("Id");
@@ -247,6 +257,18 @@ namespace Cadimm.Migrations
 
             modelBuilder.Entity("Cadimm.Models.Endereco", b =>
                 {
+                    b.HasOne("Cadimm.Models.Cidade", "Cidade")
+                        .WithMany()
+                        .HasForeignKey("CidadeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Cadimm.Models.Estado", "Estado")
+                        .WithMany()
+                        .HasForeignKey("EstadoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Cadimm.Models.Membro", null)
                         .WithMany("Enderecos")
                         .HasForeignKey("MembroId")

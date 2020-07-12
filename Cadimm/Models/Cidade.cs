@@ -9,18 +9,19 @@ namespace Cadimm.Models
     public class Cidade
     {
         public int Id { get; private set; }
+        public int EstadoId { get; set; }
 
         [Display(Name = "Cidade")]
-        public string Nome { get; set; }
-        public Estado Estado { get; private set; }
-        public int EstadoId { get; set; }
+        public string Nome { get; private set; }
+        public Estado Estado { get; set; }
         public Cidade()
         {
         }
 
-        public Cidade(int id, Estado estado)
+        public Cidade(int id, string nome, Estado estado)
         {
             Id = id;
+            Nome = nome;
             Estado = estado;
         }
     }
